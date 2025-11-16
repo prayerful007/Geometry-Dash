@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albert's Geometry Dash</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff,
+                4px 4px 0 #000,
+                6px 6px 0 rgba(0,0,0,0.5);
+            margin-bottom: 3rem;
+            animation: pulse 2s ease-in-out infinite;
+            letter-spacing: 3px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .level-btn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 4px solid #000;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 
+                0 8px 0 #000,
+                0 8px 20px rgba(0,0,0,0.5);
+            position: relative;
+            top: 0;
+        }
+
+        .level-btn:hover {
+            top: 4px;
+            box-shadow: 
+                0 4px 0 #000,
+                0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .level-btn:active {
+            top: 8px;
+            box-shadow: 
+                0 0 0 #000,
+                0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .easy {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #0a4d2e;
+        }
+
+        .medium {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #6c4a00;
+        }
+
+        .hard {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: #4a0000;
+        }
+
+        .iframe-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 100;
+        }
+
+        .iframe-container.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #ff6b6b;
+            color: white;
+            border: 3px solid #000;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 101;
+            box-shadow: 0 4px 0 #000;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: #ff5252;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Animated background elements */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+            transform: rotate(45deg);
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+            transform: rotate(15deg);
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            left: 20%;
+            animation-delay: 4s;
+            transform: rotate(30deg);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(45deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(135deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <h1>Albert's Geometry Dash</h1>
+        <div class="button-container">
+            <button class="level-btn easy" onclick="openGame('easy')">Easy</button>
+            <button class="level-btn medium" onclick="openGame('medium')">Medium</button>
+            <button class="level-btn hard" onclick="openGame('hard')">Hard</button>
+        </div>
+    </div>
+
+    <div id="easy-iframe" class="iframe-container">
+        <button class="close-btn" onclick="closeGame('easy')">✕ Close</button>
+        <iframe id="easy-frame" data-src="https://scratch.mit.edu/projects/1216495788/embed"></iframe>
+    </div>
+
+    <div id="medium-iframe" class="iframe-container">
+        <button class="close-btn" onclick="closeGame('medium')">✕ Close</button>
+        <iframe id="medium-frame" data-src="https://scratch.mit.edu/projects/1243075991/embed"></iframe>
+    </div>
+
+    <div id="hard-iframe" class="iframe-container">
+        <button class="close-btn" onclick="closeGame('hard')">✕ Close</button>
+        <iframe id="hard-frame" data-src="https://scratch.mit.edu/projects/1242995032/embed"></iframe>
+    </div>
+
+    <script>
+        function openGame(level) {
+            const iframe = document.getElementById(level + '-frame');
+            const container = document.getElementById(level + '-iframe');
+            
+            // Load the iframe source when opening
+            if (!iframe.src) {
+                iframe.src = iframe.getAttribute('data-src');
+            }
+            
+            container.classList.add('active');
+        }
+
+        function closeGame(level) {
+            const iframe = document.getElementById(level + '-frame');
+            const container = document.getElementById(level + '-iframe');
+            
+            // Remove the iframe source to stop music/game
+            iframe.src = '';
+            
+            container.classList.remove('active');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.iframe-container.active').forEach(container => {
+                    const iframe = container.querySelector('iframe');
+                    iframe.src = ''; // Stop the iframe
+                    container.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
